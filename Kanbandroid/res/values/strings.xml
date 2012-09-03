@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kanbandroid</string>
+
+    <!-- Login activity -->
+
+    <string name="tv_login_title">Please use your Kanbanery login / password</string>
+    <string name="et_login_username">Email</string>
+    <string name="et_login_password">Password</string>
+    <string name="bt_login_connexion">Login</string>
+
+</resources>

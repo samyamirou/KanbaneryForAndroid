@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:padding="15dp"
+              android:background="@color/login_background"
+        >
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_login_title"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            style="@style/login_text"
+            />
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/et_login_username"
+            android:id="@+id/et_login_username"
+            android:inputType="textEmailAddress"/>
+
+    <EditText android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="5dp"
+              android:text="@string/et_login_password"
+              android:id="@+id/et_login_password"
+              android:inputType="textPassword"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_login_connexion"
+            android:id="@+id/bt_login_connexion"
+            />
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/tv_login_error"
+            style="@style/login_error"
+            android:visibility="gone"
+            />
+
+</LinearLayout>
+
