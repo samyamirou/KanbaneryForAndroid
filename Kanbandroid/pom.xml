@@ -71,11 +71,11 @@
             <version>1.8</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>1.8</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
@@ -84,10 +84,52 @@
             <version>0.0.7</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.octo.android.content-manager</groupId>
+            <artifactId>content-manager-json</artifactId>
+            <type>jar</type>
+            <version>0.0.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.octo.android.content-manager</groupId>
+            <artifactId>content-manager-spring-android</artifactId>
+            <type>jar</type>
+            <version>0.0.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                    <artifactId>android-maven-plugin</artifactId>
+                    <version>3.3.2</version>
+                    <extensions>true</extensions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <configuration>
+                    <run>
+                        <debug>true</debug>
+                    </run>
+                    <sdk>
+                        <path>C:\\Samy\\Produits\\Android\\android-sdk</path>
+                        <platform>10</platform>
+                    </sdk>
+                    <emulator>
+                        <avd>16</avd>
+                    </emulator>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -95,18 +137,6 @@
                     <source>1.5</source>
                     <target>1.5</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>maven-android-plugin</artifactId>
-                <configuration>
-                    <sdk>
-                        <path>${env.ANDROID_HOME}</path>
-                        <platform>10</platform>
-                    </sdk>
-                    <deleteConflictingFiles>true</deleteConflictingFiles>
-                </configuration>
-                <extensions>true</extensions>
             </plugin>
         </plugins>
     </build>
