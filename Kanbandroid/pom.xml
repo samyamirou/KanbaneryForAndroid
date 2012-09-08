@@ -81,7 +81,7 @@
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager</artifactId>
             <type>jar</type>
-            <version>0.0.5-SNAPSHOT</version>
+            <version>0.0.7</version>
         </dependency>
 
     </dependencies>

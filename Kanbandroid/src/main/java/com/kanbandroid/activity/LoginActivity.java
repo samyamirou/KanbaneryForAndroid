@@ -1,16 +1,16 @@
 package com.kanbandroid.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.kanbandroid.R;
+import com.octo.android.rest.client.ContentActivity;
 
 import javax.security.auth.login.LoginException;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends ContentActivity {
     private EditText etUsername;
     private EditText etPassword;
     private TextView tvLoginError;
@@ -30,7 +30,7 @@ public class LoginActivity extends Activity {
 
         Button btnLogin = (Button) findViewById(R.id.bt_login_connexion);
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
+
             public void onClick(View view) {
                 boolean hasLogin;
                 try {

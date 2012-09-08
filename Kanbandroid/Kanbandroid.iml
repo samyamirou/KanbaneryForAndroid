@@ -38,15 +38,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/target/android-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-assets" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/combined-resources" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/extracted-dependencies" />
-      <excludeFolder url="file://$MODULE_DIR$/target/test-classes" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.0.1.2" level="project" />
@@ -76,8 +72,7 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.7.1" level="project" />
-    <orderEntry type="module" module-name="Content-manager" />
-    <orderEntry type="library" name="Maven: com.google.android:annotations:4.1.1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.octo.android.content-manager:content-manager:0.0.7" level="project" />
     <orderEntry type="jdk" jdkName="Android 2.3.3 Platform" jdkType="Android SDK" />
   </component>
 </module>
