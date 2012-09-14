@@ -4,22 +4,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 import com.google.common.base.Preconditions;
 import com.kanbandroid.R;
-import com.kanbandroid.manager.ProxySimpleTextRequest;
-import com.kanbandroid.service.RestResource;
+import com.kanbandroid.rest.request.UserRequest;
+import com.kanbandroid.model.KanbaneryUser;
 import com.octo.android.rest.client.ContentActivity;
 import com.octo.android.rest.client.ContentManager;
 import com.octo.android.rest.client.exception.ContentManagerException;
+import com.octo.android.rest.client.persistence.DurationInMillis;
 import com.octo.android.rest.client.request.ContentRequest;
 import com.octo.android.rest.client.request.RequestListener;
 import de.akquinet.android.androlog.Log;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
-public class LoginActivity extends ContentActivity implements RequestListener<String> {
+import java.util.HashSet;
+import java.util.Set;
+
+public class LoginActivity extends ContentActivity implements RequestListener<KanbaneryUser>, View.OnClickListener {
     private EditText etUsername;
     private EditText etPassword;
-    private TextView tvLoginError;
+    private Set<View> clickedEditTexts = new HashSet<View>();
+    private Button btnLogin;
+    private View progressLayout;
 
     /**
      * Called when the activity is first created.
@@ -29,46 +37,74 @@ public class LoginActivity extends ContentActivity implements RequestListener<St
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        this.tvLoginError = (TextView) findViewById(R.id.tv_login_error);
-
         this.etUsername = (EditText) findViewById(R.id.et_login_username);
+        this.etUsername.setOnClickListener(this);
         this.etPassword = (EditText) findViewById(R.id.et_login_password);
+        this.etPassword.setOnClickListener(this);
 
-        Button btnLogin = (Button) findViewById(R.id.bt_login_connexion);
+        btnLogin = (Button) findViewById(R.id.bt_login_connexion);
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 login(etUsername.getText().toString(), etPassword.getText().toString());
             }
         });
+
+        this.progressLayout = findViewById(R.id.ly_progress);
     }
 
     private void navigateToProjectsScreen() {
+        Log.i(this, "Login successful !");
     }
 
     private void login(String username, String password) {
+        //On empêche d'abord toute requête d'être lancée
+        btnLogin.setEnabled(false);
+        progressLayout.setVisibility(View.VISIBLE);
+
         ContentManager manager = getContentManager();
         Preconditions.checkArgument(username != null, "Username shouldn't be null");
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
-        ContentRequest<String> request = new ProxySimpleTextRequest(username, password, RestResource.LOGIN.getUrl());
-        /*try {
-            request.loadDataFromNetwork();
-        } catch (Exception e) {
-            Log.e(this, "Error during login", e);
-        }*/
-        manager.execute(request, this);
+        ContentRequest<KanbaneryUser> contentRequest = new UserRequest(username, password);
+
+        manager.execute(contentRequest, "user", DurationInMillis.ONE_WEEK, this);
     }
 
-    public void onRequestSuccess(String s) {
+    public void onRequestSuccess(KanbaneryUser s) {
+        Log.i(this, "Login successful ! KanbaneryUser : " + s);
+        progressLayout.setVisibility(View.INVISIBLE);
         navigateToProjectsScreen();
     }
 
     public void onRequestFailure(ContentManagerException contentManagerException) {
-        showErrorMessage(contentManagerException.getMessage());
+        Throwable cause = contentManagerException.getCause();
+        String errorMessage = "Unexpected error";
+        if(cause != null) {
+            try {
+                throw cause;
+            } catch (HttpClientErrorException e) {
+                HttpStatus statusCode = e.getStatusCode();
+                if(statusCode == HttpStatus.UNAUTHORIZED) {
+                    errorMessage = getString(R.string.error_wrong_credentials);
+                }
+            } catch (Throwable e) {
+                errorMessage += e.getMessage();
+            }
+        }
+        showErrorMessage(errorMessage);
+        btnLogin.setEnabled(true);
+        progressLayout.setVisibility(View.INVISIBLE);
     }
 
     private void showErrorMessage(String message) {
-        this.tvLoginError.setText(message);
-        this.tvLoginError.setVisibility(View.VISIBLE);
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public void onClick(View view) {
+        if(!clickedEditTexts.contains(view)) {
+            ((EditText) view).setText("");
+            clickedEditTexts.add(view);
+        }
     }
 }

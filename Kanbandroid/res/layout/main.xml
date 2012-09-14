@@ -34,16 +34,22 @@
             android:text="@string/bt_login_connexion"
             android:id="@+id/bt_login_connexion"
             />
-
-    <TextView
-            android:layout_width="fill_parent"
+    <LinearLayout
+            android:id="@+id/ly_progress"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
-            android:id="@+id/tv_login_error"
-            style="@style/login_error"
-            android:visibility="gone"
-            />
+            android:layout_width="fill_parent"
+            android:visibility="invisible">
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_marginRight="5dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_loading"/>
+    </LinearLayout>
 
 </LinearLayout>
 

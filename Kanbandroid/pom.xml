@@ -11,19 +11,23 @@
     <packaging>apk</packaging>
     <name>Kanbanery for Android</name>
 
-    <distributionManagement>
+    <repositories>
         <repository>
-            <id>nexus.octo</id>
-            <name>Maven OCTO Release Repository</name>
+            <id>central</id>
+            <name>Central</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>octo-central</id>
+            <name>Central Octo</name>
+            <url>https://projets.octo.com/nexus/content/repositories/central/</url>
+        </repository>
+        <repository>
+            <id>octo-releases</id>
+            <name>Releases Octo</name>
             <url>https://projets.octo.com/nexus/content/repositories/releases/</url>
         </repository>
-        <snapshotRepository>
-            <id>nexus.octo</id>
-            <name>Maven OCTO Snapshots Repository</name>
-            <url>https://projets.octo.com/nexus/content/repositories/snapshots/</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
+    </repositories>
 
     <properties>
         <platform.version>4.0.1.2</platform.version>
@@ -41,7 +45,7 @@
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>support-v4</artifactId>
-            <version>r6</version>
+            <version>r7</version>
         </dependency>
         <!--
         Androlog is a logging and reporting library for Android
@@ -81,21 +85,28 @@
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager</artifactId>
             <type>jar</type>
-            <version>0.0.7</version>
+            <version>0.0.10</version>
         </dependency>
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager-json</artifactId>
             <type>jar</type>
-            <version>0.0.7</version>
+            <version>0.0.10</version>
         </dependency>
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager-spring-android</artifactId>
             <type>jar</type>
-            <version>0.0.7</version>
+            <version>0.0.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.octo.android.content-manager</groupId>
+            <artifactId>content-manager-sample</artifactId>
+            <type>jar</type>
+            <version>0.0.10</version>
         </dependency>
 
     </dependencies>
@@ -122,7 +133,7 @@
                     </run>
                     <sdk>
                         <path>C:\\Samy\\Produits\\Android\\android-sdk</path>
-                        <platform>10</platform>
+                        <platform>15</platform>
                     </sdk>
                     <emulator>
                         <avd>16</avd>

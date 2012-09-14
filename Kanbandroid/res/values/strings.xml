@@ -8,5 +8,10 @@
     <string name="et_login_username">Email</string>
     <string name="et_login_password">Password</string>
     <string name="bt_login_connexion">Login</string>
+    <string name="login_loading">Login requested …</string>
+
+    <!-- Error messages -->
+
+    <string name="error_wrong_credentials">Authentication error, please check your username/password</string>
 
 </resources>

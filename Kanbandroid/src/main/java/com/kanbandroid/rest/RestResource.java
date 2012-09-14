@@ -1,4 +1,4 @@
-package com.kanbandroid.service;
+package com.kanbandroid.rest;
 
 public enum RestResource {
     LOGIN("https://kanbanery.com/api/v1/");
