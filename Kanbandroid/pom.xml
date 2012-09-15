@@ -4,13 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kanbandroid</groupId>
     <artifactId>kanbandroid</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>apk</packaging>
     <name>Kanbanery for Android</name>
 
     <scm>
         <connection>scm:git:https://github.com/samyamirou/KanbaneryForAndroid</connection>
-        <developerConnection>scm:git:https://github.com/samyamirou/KanbaneryForAndroid</developerConnection>
+        <developerConnection>scm:git:git@github.com/samyamirou/KanbaneryForAndroid.git</developerConnection>
         <url>https://github.com/samyamirou/KanbaneryForAndroid</url>
     </scm>
 
@@ -126,14 +126,14 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
                 <version>1.8</version>
                 <configuration>
                     <connectionType>developerConnection</connectionType>
                 </configuration>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
