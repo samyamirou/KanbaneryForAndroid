@@ -10,7 +10,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/samyamirou/KanbaneryForAndroid</connection>
-        <developerConnection>scm:git:git@github.com/samyamirou/KanbaneryForAndroid.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/samyamirou/KanbaneryForAndroid</developerConnection>
         <url>https://github.com/samyamirou/KanbaneryForAndroid</url>
     </scm>
 
