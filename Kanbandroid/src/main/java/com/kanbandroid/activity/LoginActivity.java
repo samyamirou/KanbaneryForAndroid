@@ -9,7 +9,6 @@ import com.google.common.base.Preconditions;
 import com.kanbandroid.R;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.model.KanbaneryUser;
-import com.octo.android.rest.client.ContentActivity;
 import com.octo.android.rest.client.ContentManager;
 import com.octo.android.rest.client.exception.ContentManagerException;
 import com.octo.android.rest.client.persistence.DurationInMillis;
@@ -67,7 +66,7 @@ public class LoginActivity extends ContentActivity implements RequestListener<Ka
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
         ContentRequest<KanbaneryUser> contentRequest = new UserRequest(username, password);
 
-        manager.execute(contentRequest, "user", DurationInMillis.ONE_WEEK, this);
+        manager.execute(contentRequest, "user", DurationInMillis.ONE_SECOND, this);
     }
 
     public void onRequestSuccess(KanbaneryUser s) {

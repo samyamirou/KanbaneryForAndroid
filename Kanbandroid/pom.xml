@@ -27,6 +27,11 @@
             <name>Releases Octo</name>
             <url>https://projets.octo.com/nexus/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>octo-snapshots</id>
+            <name>Releases Octo</name>
+            <url>https://projets.octo.com/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -85,28 +90,28 @@
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager</artifactId>
             <type>jar</type>
-            <version>0.0.10</version>
+            <version>0.0.11</version>
         </dependency>
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager-json</artifactId>
             <type>jar</type>
-            <version>0.0.10</version>
+            <version>0.0.11</version>
         </dependency>
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager-spring-android</artifactId>
             <type>jar</type>
-            <version>0.0.10</version>
+            <version>0.0.11</version>
         </dependency>
 
         <dependency>
             <groupId>com.octo.android.content-manager</groupId>
             <artifactId>content-manager-sample</artifactId>
             <type>jar</type>
-            <version>0.0.10</version>
+            <version>0.0.11</version>
         </dependency>
 
     </dependencies>

@@ -6,6 +6,7 @@ import com.kanbandroid.rest.UrlConstants;
 import com.octo.android.rest.client.request.springandroid.RestContentRequest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<T> {
 
@@ -35,9 +36,8 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
 
     protected ResponseEntity<T> getResponse() throws RestClientException {
         initializeRequest();
-        ResponseEntity<T> response;
-        response = getRestTemplate().exchange(url, HttpMethod.GET, requestEntity, resultClass);
-        return response;
+        RestTemplate restTemplate = getRestTemplate();
+        return restTemplate.exchange(url, HttpMethod.GET, requestEntity, resultClass);
     }
 
     private void initializeRequest() {

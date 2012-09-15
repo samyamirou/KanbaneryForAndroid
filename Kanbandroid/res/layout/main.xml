@@ -4,7 +4,6 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:padding="15dp"
-              android:background="@color/login_background"
         >
     <TextView
             android:layout_width="fill_parent"
@@ -12,7 +11,6 @@
             android:text="@string/tv_login_title"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
-            style="@style/login_text"
             />
     <EditText
             android:layout_width="fill_parent"
@@ -43,7 +41,7 @@
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/Widget.ProgressBar.Small"
+                style="@android:style/Widget.Holo.ProgressBar.Small"
                 android:layout_marginRight="5dp"/>
         <TextView
                 android:layout_width="wrap_content"
