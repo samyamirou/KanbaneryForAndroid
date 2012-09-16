@@ -1,18 +1,18 @@
 package com.kanbandroid.rest.request;
 
-import com.kanbandroid.model.KanbaneryUser;
+import com.kanbandroid.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
-public class UserRequest extends KanbaneryRestContentRequest<KanbaneryUser> {
+public class UserRequest extends KanbaneryRestContentRequest<User> {
 
     public UserRequest(String username, String password) {
-        super(KanbaneryUser.class, "user.json", username, password);
+        super(User.class, "user.json", username, password);
     }
 
     @Override
-    public KanbaneryUser loadDataFromNetwork() throws RestClientException {
-        ResponseEntity<KanbaneryUser> response = getResponse();
+    public User loadDataFromNetwork() throws RestClientException {
+        ResponseEntity<User> response = getResponse();
         return response.getBody();
     }
 }

@@ -7,8 +7,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.google.common.base.Preconditions;
 import com.kanbandroid.R;
+import com.kanbandroid.model.User;
 import com.kanbandroid.rest.request.UserRequest;
-import com.kanbandroid.model.KanbaneryUser;
 import com.octo.android.rest.client.ContentManager;
 import com.octo.android.rest.client.exception.ContentManagerException;
 import com.octo.android.rest.client.persistence.DurationInMillis;
@@ -21,7 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LoginActivity extends ContentActivity implements RequestListener<KanbaneryUser>, View.OnClickListener {
+public class LoginActivity extends ContentActivity implements RequestListener<User>, View.OnClickListener {
     private EditText etUsername;
     private EditText etPassword;
     private Set<View> clickedEditTexts = new HashSet<View>();
@@ -64,13 +64,13 @@ public class LoginActivity extends ContentActivity implements RequestListener<Ka
         ContentManager manager = getContentManager();
         Preconditions.checkArgument(username != null, "Username shouldn't be null");
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
-        ContentRequest<KanbaneryUser> contentRequest = new UserRequest(username, password);
+        ContentRequest<User> contentRequest = new UserRequest(username, password);
 
         manager.execute(contentRequest, "user", DurationInMillis.ONE_SECOND, this);
     }
 
-    public void onRequestSuccess(KanbaneryUser s) {
-        Log.i(this, "Login successful ! KanbaneryUser : " + s);
+    public void onRequestSuccess(User s) {
+        Log.i(this, "Login successful ! User : " + s);
         progressLayout.setVisibility(View.INVISIBLE);
         navigateToProjectsScreen();
     }
