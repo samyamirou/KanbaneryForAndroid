@@ -1,4 +1,4 @@
-package com.kanbandroid.activity;
+package com.kanbandroid.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +8,10 @@ import android.widget.Toast;
 import com.google.common.base.Preconditions;
 import com.kanbandroid.R;
 import com.kanbandroid.model.User;
+import com.kanbandroid.model.Workspace;
+import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.rest.request.UserRequest;
+import com.kanbandroid.rest.request.WorkspacesRequest;
 import com.octo.android.rest.client.ContentManager;
 import com.octo.android.rest.client.exception.ContentManagerException;
 import com.octo.android.rest.client.persistence.DurationInMillis;
@@ -19,9 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class LoginActivity extends ContentActivity implements RequestListener<User>, View.OnClickListener {
+public class LoginActivity extends ContentActivity implements View.OnClickListener {
     private EditText etUsername;
     private EditText etPassword;
     private Set<View> clickedEditTexts = new HashSet<View>();
@@ -34,7 +38,7 @@ public class LoginActivity extends ContentActivity implements RequestListener<Us
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.login);
 
         this.etUsername = (EditText) findViewById(R.id.et_login_username);
         this.etUsername.setOnClickListener(this);
@@ -50,6 +54,9 @@ public class LoginActivity extends ContentActivity implements RequestListener<Us
         });
 
         this.progressLayout = findViewById(R.id.ly_progress);
+
+        // Pour tests
+        getCacheManager().removeAllDataFromCache();
     }
 
     private void navigateToProjectsScreen() {
@@ -66,33 +73,16 @@ public class LoginActivity extends ContentActivity implements RequestListener<Us
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
         ContentRequest<User> contentRequest = new UserRequest(username, password);
 
-        manager.execute(contentRequest, "user", DurationInMillis.ONE_SECOND, this);
-    }
-
-    public void onRequestSuccess(User s) {
-        Log.i(this, "Login successful ! User : " + s);
-        progressLayout.setVisibility(View.INVISIBLE);
-        navigateToProjectsScreen();
-    }
-
-    public void onRequestFailure(ContentManagerException contentManagerException) {
-        Throwable cause = contentManagerException.getCause();
-        String errorMessage = "Unexpected error";
-        if(cause != null) {
-            try {
-                throw cause;
-            } catch (HttpClientErrorException e) {
-                HttpStatus statusCode = e.getStatusCode();
-                if(statusCode == HttpStatus.UNAUTHORIZED) {
-                    errorMessage = getString(R.string.error_wrong_credentials);
-                }
-            } catch (Throwable e) {
-                errorMessage += e.getMessage();
+        manager.execute(contentRequest, "user", DurationInMillis.ONE_HOUR, new RequestListener<User>() {
+            public void onRequestSuccess(User user) {
+                Log.i(LoginActivity.this, "Login successful ! User : " + user.getEmail());
+                requestForWorkspaces();
             }
-        }
-        showErrorMessage(errorMessage);
-        btnLogin.setEnabled(true);
-        progressLayout.setVisibility(View.INVISIBLE);
+
+            public void onRequestFailure(ContentManagerException contentManagerException) {
+                handleRequestError(contentManagerException);
+            }
+        });
     }
 
     private void showErrorMessage(String message) {
@@ -105,5 +95,43 @@ public class LoginActivity extends ContentActivity implements RequestListener<Us
             ((EditText) view).setText("");
             clickedEditTexts.add(view);
         }
+    }
+
+    private void requestForWorkspaces() {
+        ContentManager manager = getContentManager();
+        ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(user.getApiKey());
+
+        manager.execute(contentRequest, "workspaces", DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
+
+            public void onRequestSuccess(Workspaces workspaces) {
+                progressLayout.setVisibility(View.INVISIBLE);
+                Log.i(LoginActivity.this, "Found workspaces for this user : " + user.getEmail());
+                navigateToProjectsScreen();
+            }
+
+            public void onRequestFailure(ContentManagerException contentManagerException) {
+                handleRequestError(contentManagerException);
+            }
+        });
+    }
+
+    private void handleRequestError(ContentManagerException contentManagerException) {
+        Throwable cause = contentManagerException.getCause();
+        String errorMessage = "Unexpected error";
+        if(cause != null) {
+            try {
+                throw cause;
+            } catch (HttpClientErrorException e) {
+                HttpStatus statusCode = e.getStatusCode();
+                if(statusCode == HttpStatus.UNAUTHORIZED) {
+                    errorMessage = getString(R.string.error_wrong_credentials);
+                }
+            } catch (Throwable e) {
+                errorMessage += " " + e.getMessage();
+            }
+        }
+        showErrorMessage(errorMessage);
+        btnLogin.setEnabled(true);
+        progressLayout.setVisibility(View.INVISIBLE);
     }
 }

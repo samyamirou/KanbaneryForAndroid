@@ -2,6 +2,7 @@ package com.kanbandroid.rest.request;
 
 import android.util.Log;
 import com.google.common.base.Strings;
+import com.kanbandroid.model.Workspace;
 import com.kanbandroid.rest.UrlConstants;
 import com.octo.android.rest.client.request.springandroid.RestContentRequest;
 import org.springframework.http.*;
@@ -15,7 +16,7 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
     private String password;
     private String apiKey;
     private Class<T> resultClass;
-    private HttpEntity<Object> requestEntity;
+    private HttpEntity<T> requestEntity;
 
     private KanbaneryRestContentRequest(Class<T> clazz, String resourcePath) {
         super(clazz);
@@ -32,6 +33,20 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
     public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, String apiKey) {
         this(clazz, resourcePath);
         this.apiKey = apiKey;
+    }
+
+    public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, Workspace workspace, String username, String password) {
+        this(clazz, resourcePath, username, password);
+        formatWorkspaceUrl(workspace);
+    }
+
+    public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, Workspace workspace, String apiKey) {
+        this(clazz, resourcePath, apiKey);
+        formatWorkspaceUrl(workspace);
+    }
+
+    private void formatWorkspaceUrl(Workspace workspace) {
+        this.url = String.format(UrlConstants.WORKSPACE_URL, workspace.getName());
     }
 
     protected ResponseEntity<T> getResponse() throws RestClientException {
@@ -53,6 +68,6 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
             throw new RestClientException("Error, no API Key or username/password available");
         }
 
-        this.requestEntity = new HttpEntity<Object>(requestHeaders);
+        this.requestEntity = new HttpEntity<T>(requestHeaders);
     }
 }
