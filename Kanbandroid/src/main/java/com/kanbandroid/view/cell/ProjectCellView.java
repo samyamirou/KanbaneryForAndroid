@@ -12,9 +12,9 @@ public class ProjectCellView extends LinearLayout {
 
     public ProjectCellView(Context context) {
         super(context);
-        this.tvCellProject = (TextView) findViewById(R.id.tv_cell_project);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.project_cell_view, this);
+        this.tvCellProject = (TextView) findViewById(R.id.tv_cell_project);
     }
 
     public void setData(Project project) {

@@ -22,8 +22,6 @@ import java.util.List;
 public class ProjectListActivity extends ContentActivity {
     private TextView tvProjectsHeader;
     private ListView lvProjects;
-
-    private User user = null;
     private List<Project> projectList = null;
 
     @Override

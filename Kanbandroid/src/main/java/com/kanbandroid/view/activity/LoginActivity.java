@@ -63,6 +63,7 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
     private void navigateToProjectsScreen() {
         Intent intent = new Intent(this, ProjectListActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void login(String username, String password) {
