@@ -1,5 +1,6 @@
 package com.kanbandroid.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,7 +61,8 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
     }
 
     private void navigateToProjectsScreen() {
-        Log.i(this, "Login successful !");
+        Intent intent = new Intent(this, ProjectListActivity.class);
+        startActivity(intent);
     }
 
     private void login(String username, String password) {
@@ -74,8 +76,9 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
         ContentRequest<User> contentRequest = new UserRequest(username, password);
 
         manager.execute(contentRequest, "user", DurationInMillis.ONE_HOUR, new RequestListener<User>() {
-            public void onRequestSuccess(User user) {
-                Log.i(LoginActivity.this, "Login successful ! User : " + user.getEmail());
+            public void onRequestSuccess(User requestedUser) {
+                Log.i(LoginActivity.this, "Login successful ! User : " + requestedUser.getEmail());
+                user = requestedUser;
                 requestForWorkspaces();
             }
 

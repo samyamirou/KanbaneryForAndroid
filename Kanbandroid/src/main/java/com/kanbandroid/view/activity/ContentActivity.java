@@ -13,7 +13,7 @@ import com.octo.android.rest.client.persistence.CacheManager;
 import com.octo.android.rest.client.persistence.DurationInMillis;
 import de.akquinet.android.androlog.Log;
 
-public class ContentActivity extends Activity {
+public abstract class ContentActivity extends Activity {
     private ContentManager contentManager = new ContentManager( SpringAndroidContentService.class );
     protected User user;
     protected Workspaces workspaces;
@@ -24,12 +24,14 @@ public class ContentActivity extends Activity {
 
     @Override
     protected void onStart() {
+        Log.i(this, "Starting activity " + getClass().getSimpleName() + " ...");
         contentManager.start( this );
         super.onStart();
     }
 
     @Override
     protected void onStop() {
+        Log.i(this, "Stopping activity " + getClass().getSimpleName());
         contentManager.shouldStop();
         super.onStop();
     }
