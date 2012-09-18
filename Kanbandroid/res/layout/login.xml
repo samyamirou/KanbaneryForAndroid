@@ -11,6 +11,7 @@
             android:text="@string/tv_login_title"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
+            style="@android:style/TextAppearance.Holo"/>
             />
     <EditText
             android:layout_width="fill_parent"

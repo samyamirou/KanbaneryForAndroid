@@ -28,6 +28,9 @@ public class ProjectListActivity extends ContentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.projects);
+
+
+
         this.tvProjectsHeader = (TextView) findViewById(R.id.tv_projects_header);
         this.lvProjects = (ListView) findViewById(R.id.lv_projects);
 

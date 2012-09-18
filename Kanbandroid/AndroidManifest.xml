@@ -12,7 +12,7 @@
     <application android:name=".KanbandroidApplication"
                  android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher"
-                 android:theme="@style/KanbandroidTheme">
+                 android:theme="@style/Theme.Kanbandroid">
         <activity android:name=".view.activity.LoginActivity"
                   android:label="@string/app_name">
             <intent-filter>

@@ -41,6 +41,8 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        getSupportActionBar().hide();
+
         this.etUsername = (EditText) findViewById(R.id.et_login_username);
         this.etUsername.setOnClickListener(this);
         this.etPassword = (EditText) findViewById(R.id.et_login_password);
