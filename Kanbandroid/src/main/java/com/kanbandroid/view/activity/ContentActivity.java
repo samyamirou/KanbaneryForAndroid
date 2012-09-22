@@ -1,9 +1,11 @@
 package com.kanbandroid.view.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.kanbandroid.KanbandroidApplication;
+import com.kanbandroid.R;
 import com.kanbandroid.model.User;
 import com.kanbandroid.model.Workspaces;
 import com.octo.android.rest.client.ContentManager;
@@ -20,6 +22,16 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
 
     protected CacheManager getCacheManager() {
         return ((KanbandroidApplication)getApplication()).getCacheManager();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setTitle(getString(R.string.app_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
     }
 
     @Override

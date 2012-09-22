@@ -10,8 +10,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tv_login_title"
             android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
-            style="@android:style/TextAppearance.Holo"/>
+            android:gravity="center_horizontal"/>
             />
     <EditText
             android:layout_width="fill_parent"
@@ -42,7 +41,7 @@
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/Widget.Holo.ProgressBar.Small"
+                style="@style/Widget.Sherlock.ProgressBar"
                 android:layout_marginRight="5dp"/>
         <TextView
                 android:layout_width="wrap_content"
