@@ -23,10 +23,6 @@
 
         <activity android:name=".view.activity.ProjectListActivity"/>
 
-        <service android:name="com.octo.android.rest.client.SpringAndroidContentService" android:exported="false">
-            <intent-filter>
-                <action android:name="com.octo.android.rest.client.SpringAndroidContentService"/>
-            </intent-filter>
-        </service>
+        <service android:name=".service.KanbandroidContentService" android:exported="false"/>
     </application>
 </manifest>

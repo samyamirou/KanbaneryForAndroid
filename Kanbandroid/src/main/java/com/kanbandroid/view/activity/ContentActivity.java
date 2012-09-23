@@ -1,32 +1,38 @@
 package com.kanbandroid.view.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.kanbandroid.KanbandroidApplication;
 import com.kanbandroid.R;
 import com.kanbandroid.model.User;
 import com.kanbandroid.model.Workspaces;
-import com.octo.android.rest.client.ContentManager;
-import com.octo.android.rest.client.SpringAndroidContentService;
-import com.octo.android.rest.client.exception.CacheLoadingException;
-import com.octo.android.rest.client.persistence.CacheManager;
-import com.octo.android.rest.client.persistence.DurationInMillis;
+import com.kanbandroid.rest.request.UserRequest;
+import com.kanbandroid.rest.request.WorkspacesRequest;
+import com.kanbandroid.service.KanbandroidContentService;
+import com.kanbandroid.util.CacheKeys;
+import com.kanbandroid.util.Preferences;
+import com.octo.android.robospice.ContentManager;
+import com.octo.android.robospice.exception.ContentManagerException;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.request.ContentRequest;
+import com.octo.android.robospice.request.RequestListener;
 import de.akquinet.android.androlog.Log;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 public abstract class ContentActivity extends SherlockFragmentActivity {
-    private ContentManager contentManager = new ContentManager( SpringAndroidContentService.class );
+    private ContentManager contentManager = new ContentManager( KanbandroidContentService.class );
     protected User user;
     protected Workspaces workspaces;
-
-    protected CacheManager getCacheManager() {
-        return ((KanbandroidApplication)getApplication()).getCacheManager();
-    }
+    protected String apiKey = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        apiKey = loadApiKeyFromPreferences();
 
         getSupportActionBar().setTitle(getString(R.string.app_name));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,10 +40,16 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(false);
     }
 
+    private String loadApiKeyFromPreferences() {
+        SharedPreferences pref = getSharedPreferences(Preferences.PREF_KEY, 0);
+        return pref.getString(Preferences.API_KEY, null);
+    }
+
     @Override
     protected void onStart() {
         Log.i(this, "Starting activity " + getLocalClassName() + " ...");
         contentManager.start( this );
+
         super.onStart();
     }
 
@@ -52,32 +64,44 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         return contentManager;
     }
 
-    protected void loadUserFromCache() {
-        String errorMsg = "Error while loading user data from cache";
+    protected void loadUser() {
+        //On empêche d'abord toute requête d'être lancée
 
-        try {
-            this.user = getCacheManager().loadDataFromCache(User.class, "user", DurationInMillis.ONE_HOUR);
-        } catch (CacheLoadingException e) {
-            Log.e(this, errorMsg, e);
-        }
+        ContentManager manager = getContentManager();
+        ContentRequest<User> contentRequest = new UserRequest(apiKey);
+
+        manager.execute(contentRequest, CacheKeys.USER, DurationInMillis.ONE_HOUR, new RequestListener<User>() {
+            public void onRequestSuccess(User requestedUser) {
+                user = requestedUser;
+            }
+
+            public void onRequestFailure(ContentManagerException contentManagerException) {
+                handleRequestError(contentManagerException);
+            }
+        });
 
         if(this.user == null) {
-            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
             goBackToLoginScreen();
         }
     }
 
-    protected void loadWorkspacesFromCache() {
-        String errorMsg = "Error while loading workspaces data from cache";
+    protected void loadWorkspaces() {
+        ContentManager manager = getContentManager();
+        ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(user.getApiKey());
 
-        try {
-            this.workspaces = getCacheManager().loadDataFromCache(Workspaces.class, "workspaces", DurationInMillis.ONE_HOUR);
-        } catch (CacheLoadingException e) {
-            Log.e(this, errorMsg, e);
-        }
+        manager.execute(contentRequest, "workspaces", DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
+
+            public void onRequestSuccess(Workspaces workspaces) {
+                handleRequestSuccess();
+                ContentActivity.this.workspaces = workspaces;
+            }
+
+            public void onRequestFailure(ContentManagerException contentManagerException) {
+                handleRequestError(contentManagerException);
+            }
+        });
 
         if(this.workspaces == null) {
-            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
             goBackToLoginScreen();
         }
     }
@@ -87,5 +111,37 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    protected void handleEndRequest() {
+
+    }
+
+    protected void handleRequestSuccess() {
+        handleEndRequest();
+    }
+
+    protected void handleRequestError(ContentManagerException contentManagerException) {
+        Throwable cause = contentManagerException.getCause();
+        String errorMessage = "Unexpected error";
+        if(cause != null) {
+            try {
+                throw cause;
+            } catch (HttpClientErrorException e) {
+                HttpStatus statusCode = e.getStatusCode();
+                if(statusCode == HttpStatus.UNAUTHORIZED) {
+                    errorMessage = getString(R.string.error_wrong_credentials);
+                }
+            } catch (Throwable e) {
+                errorMessage += " " + e.getMessage();
+            }
+        }
+        Log.e(this, errorMessage, contentManagerException);
+        showErrorMessage(errorMessage);
+    }
+
+    private void showErrorMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

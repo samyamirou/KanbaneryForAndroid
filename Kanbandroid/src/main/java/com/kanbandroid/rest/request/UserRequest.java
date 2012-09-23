@@ -6,8 +6,14 @@ import org.springframework.web.client.RestClientException;
 
 public class UserRequest extends KanbaneryRestContentRequest<User> {
 
+    public static final String RESOURCE_PATH = "user.json";
+
     public UserRequest(String username, String password) {
-        super(User.class, "user.json", username, password);
+        super(User.class, RESOURCE_PATH, username, password);
+    }
+
+    public UserRequest(String apiKey) {
+        super(User.class, RESOURCE_PATH, apiKey);
     }
 
     @Override

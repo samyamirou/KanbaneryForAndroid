@@ -4,7 +4,7 @@ import android.util.Log;
 import com.google.common.base.Strings;
 import com.kanbandroid.model.Workspace;
 import com.kanbandroid.rest.UrlConstants;
-import com.octo.android.rest.client.request.springandroid.RestContentRequest;
+import com.octo.android.robospice.request.springandroid.RestContentRequest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;

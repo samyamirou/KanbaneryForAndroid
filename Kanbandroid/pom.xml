@@ -92,31 +92,32 @@
         </dependency>
 
         <dependency>
-            <groupId>com.octo.android.content-manager</groupId>
-            <artifactId>content-manager</artifactId>
+            <groupId>com.octo.android.robospice</groupId>
+            <artifactId>robospice</artifactId>
             <type>jar</type>
-            <version>0.0.11</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.octo.android.content-manager</groupId>
-            <artifactId>content-manager-json</artifactId>
+            <groupId>com.octo.android.robospice</groupId>
+            <artifactId>robospice-json</artifactId>
             <type>jar</type>
-            <version>0.0.11</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.octo.android.content-manager</groupId>
-            <artifactId>content-manager-spring-android</artifactId>
+            <groupId>com.octo.android.robospice</groupId>
+            <artifactId>robospice-spring-android</artifactId>
             <type>jar</type>
-            <version>0.0.11</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.octo.android.content-manager</groupId>
-            <artifactId>content-manager-sample</artifactId>
+            <groupId>com.octo.android.robospice</groupId>
+            <artifactId>robospice-sample</artifactId>
             <type>jar</type>
-            <version>0.0.11</version>
+            <version>1.0.0</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

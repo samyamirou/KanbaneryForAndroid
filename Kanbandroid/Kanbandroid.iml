@@ -58,18 +58,18 @@
     <orderEntry type="library" name="Maven: com.google.guava:guava:13.0-rc1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-client:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.8" level="project" />
-    <orderEntry type="library" name="Maven: com.octo.android.content-manager:content-manager:0.0.11" level="project" />
-    <orderEntry type="library" name="Maven: com.octo.android.content-manager:content-manager-json:0.0.11" level="project" />
+    <orderEntry type="library" name="Maven: com.octo.android.robospice:robospice:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.octo.android.robospice:robospice-json:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.7" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.7" level="project" />
-    <orderEntry type="library" name="Maven: com.octo.android.content-manager:content-manager-spring-android:0.0.11" level="project" />
+    <orderEntry type="library" name="Maven: com.octo.android.robospice:robospice-spring-android:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-rest-template:1.0.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.android:spring-android-core:1.0.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.octo.android.content-manager:content-manager-sample:0.0.11" level="project" />
-    <orderEntry type="library" name="Maven: org.roboguice:roboguice:2.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.inject:guice:no_aop:3.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.octo.android.robospice:robospice-sample:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.roboguice:roboguice:2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.google.inject:guice:no_aop:3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="jdk" jdkName="Android 4.0.3 Platform" jdkType="Android SDK" />
     <orderEntry type="module" module-name="~apklib-com.actionbarsherlock_library_4.1.0" />
   </component>
