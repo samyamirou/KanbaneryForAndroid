@@ -4,4 +4,10 @@
         <!--<item name="android:windowBackground">@drawable/background_gradient</item>
         <item name="android:colorBackgroundCacheHint">#00000000</item>-->
     </style>
+    <style name="Theme.Kanbandroid.Cell">
+        <item name="android:layout_padding">20dp</item>
+    </style>
+    <style name="Theme.Kanbandroid.Cell.Header">
+
+    </style>
 </resources>

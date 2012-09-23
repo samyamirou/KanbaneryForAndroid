@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.kanbandroid.R;
+import com.kanbandroid.model.Project;
 import com.kanbandroid.model.Workspace;
+import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.util.RequestKey;
-import com.kanbandroid.view.adapter.DefaultAdapter;
-import com.kanbandroid.view.cell.WorkspaceCellView;
+import com.kanbandroid.view.adapter.ProjectCellAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectListActivity extends ContentActivity {
     private TextView tvWorkspacesHeader;
@@ -40,8 +44,20 @@ public class ProjectListActivity extends ContentActivity {
                 tvWorkspacesHeader.setText(user.getName());
                 break;
             case WORKSPACES:
-                lvWorkspaces.setAdapter(new DefaultAdapter<Workspace>(this, WorkspaceCellView.class, workspaces));
+                List<Project> projectList = getProjectList(workspaces);
+                lvWorkspaces.setAdapter(new ProjectCellAdapter(this, projectList));
                 break;
         }
+    }
+
+    private List<Project> getProjectList(Workspaces workspaces) {
+        List<Project> ret = new ArrayList<Project>();
+        for(Workspace workspace : workspaces) {
+            for (Project project : workspace.getProjects()) {
+                project.setWorkspace(workspace);
+                ret.add(project);
+            }
+        }
+        return ret;
     }
 }

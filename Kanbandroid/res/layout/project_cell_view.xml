@@ -3,9 +3,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-                android:padding="5dp">
-       <TextView
-               android:id="@+id/tv_cell_project"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"/>
+              android:orientation="vertical">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_cell_workspace"
+            android:visibility="gone"
+            android:clickable="false"
+            style="@style/Theme.Kanbandroid.Cell.Header"/>
+    <TextView
+            android:id="@+id/tv_cell_project"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            style="@style/Theme.Kanbandroid.Cell"/>
 </LinearLayout>

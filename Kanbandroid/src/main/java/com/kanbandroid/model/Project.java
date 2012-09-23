@@ -7,6 +7,16 @@ public class Project extends ModelObject {
     private String currentUserPermission;
     private String name;
 
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    private Workspace workspace;
+
     public String getCurrentUserPermission() {
         return this.currentUserPermission;
     }

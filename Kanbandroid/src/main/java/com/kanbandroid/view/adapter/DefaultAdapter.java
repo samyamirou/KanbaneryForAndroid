@@ -15,12 +15,18 @@ public class DefaultAdapter<T> extends BaseAdapter {
     protected Class<? extends CustomCellView<T>> cellViewClass;
     protected List<T> objectList;
     private CustomCellView<T> cell;
+    private ViewGroup parent;
 
     public DefaultAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList) {
         super();
         this.context = context;
         this.cellViewClass = cellViewClass;
         this.objectList = objectList;
+    }
+
+    public DefaultAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList, ViewGroup parent) {
+        this(context, cellViewClass, objectList);
+        this.parent = parent;
     }
 
     public void clear() {
@@ -63,7 +69,11 @@ public class DefaultAdapter<T> extends BaseAdapter {
 
     protected CustomCellView<T> newView() {
         try {
-            cell = cellViewClass.getConstructor(Context.class).newInstance(context);
+            if (parent != null) {
+                cell = cellViewClass.getConstructor(Context.class, ViewGroup.class).newInstance(context, parent);
+            } else {
+                cell = cellViewClass.getConstructor(Context.class).newInstance(context);
+            }
         } catch (Exception e) {
             Log.e(this, "Error during constructor call", e);
         }

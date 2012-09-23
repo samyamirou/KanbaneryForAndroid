@@ -8,12 +8,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_workspaces_header"
-            android:gravity="center_horizontal"
-            />
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <ListView
             android:id="@+id/lv_workspaces"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 </LinearLayout>
