@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.kanbandroid.R;
 import com.kanbandroid.model.User;
 import com.kanbandroid.rest.request.UserRequest;
+import com.kanbandroid.util.Preferences;
 import com.octo.android.robospice.ContentManager;
 import com.octo.android.robospice.exception.ContentManagerException;
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -52,7 +53,7 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
         this.progressLayout = findViewById(R.id.ly_progress);
 
         // Pour tests
-        getContentManager().removeAllDataFromCache();
+        //getContentManager().removeAllDataFromCache();
     }
 
     private void navigateToProjectsScreen() {
@@ -75,6 +76,7 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
             public void onRequestSuccess(User requestedUser) {
                 Log.i(LoginActivity.this, "Login successful ! User : " + requestedUser.getEmail());
                 user = requestedUser;
+                Preferences.putSharedPreference(user.getApiKey(), LoginActivity.this, Preferences.PREF_KEY, Preferences.API_KEY);
                 navigateToProjectsScreen();
             }
 

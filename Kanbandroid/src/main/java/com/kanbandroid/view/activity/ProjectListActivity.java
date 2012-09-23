@@ -26,11 +26,21 @@ public class ProjectListActivity extends ContentActivity {
         loadUser();
         loadWorkspaces();
 
-        if(!workspaces.isEmpty()) {
-            projectList = workspaces.get(0).getProjects();
-        }
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+    }
 
-        initializeLayout();
+    @Override
+    protected void handleRequestSuccess() {
+        super.handleRequestSuccess();
+
+        getSherlock().setProgressBarIndeterminateVisibility(false);
+
+        if (workspaces != null && user != null) {
+            if(!workspaces.isEmpty()) {
+                projectList = workspaces.get(0).getProjects();
+            }
+            initializeLayout();
+        }
     }
 
     private void initializeLayout() {

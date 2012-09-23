@@ -73,37 +73,30 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         manager.execute(contentRequest, CacheKeys.USER, DurationInMillis.ONE_HOUR, new RequestListener<User>() {
             public void onRequestSuccess(User requestedUser) {
                 user = requestedUser;
+                handleRequestSuccess();
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
                 handleRequestError(contentManagerException);
             }
         });
-
-        if(this.user == null) {
-            goBackToLoginScreen();
-        }
     }
 
     protected void loadWorkspaces() {
         ContentManager manager = getContentManager();
-        ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(user.getApiKey());
+        ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(apiKey);
 
-        manager.execute(contentRequest, "workspaces", DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
+        manager.execute(contentRequest, CacheKeys.WORKSPACES, DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
 
             public void onRequestSuccess(Workspaces workspaces) {
-                handleRequestSuccess();
                 ContentActivity.this.workspaces = workspaces;
+                handleRequestSuccess();
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
                 handleRequestError(contentManagerException);
             }
         });
-
-        if(this.workspaces == null) {
-            goBackToLoginScreen();
-        }
     }
 
     protected void goBackToLoginScreen() {
