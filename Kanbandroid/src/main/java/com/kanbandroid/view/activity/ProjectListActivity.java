@@ -1,6 +1,8 @@
 package com.kanbandroid.view.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.kanbandroid.R;
@@ -16,6 +18,7 @@ import java.util.List;
 public class ProjectListActivity extends ContentActivity {
     private TextView tvWorkspacesHeader;
     private ListView lvWorkspaces;
+    private List<Project> projectList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,14 @@ public class ProjectListActivity extends ContentActivity {
         requestForWorkspaces();
 
         getSherlock().setProgressBarIndeterminateVisibility(true);
+
+        this.lvWorkspaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Project selectedProject = projectList.get(position);
+
+            }
+        });
     }
 
     @Override
@@ -44,7 +55,7 @@ public class ProjectListActivity extends ContentActivity {
                 tvWorkspacesHeader.setText(user.getName());
                 break;
             case WORKSPACES:
-                List<Project> projectList = getProjectList(workspaces);
+                projectList = getProjectList(workspaces);
                 lvWorkspaces.setAdapter(new ProjectCellAdapter(this, projectList));
                 break;
         }
