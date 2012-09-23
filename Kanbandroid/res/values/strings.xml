@@ -13,5 +13,6 @@
     <!-- Error messages -->
 
     <string name="error_wrong_credentials">Authentication error, please check your username/password</string>
+    <string name="desc_logo_title">Logo title</string>
 
 </resources>

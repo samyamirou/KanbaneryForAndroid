@@ -5,6 +5,11 @@
               android:layout_height="fill_parent"
               android:padding="15dp"
         >
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/kanbanery_logo_text"
+            android:contentDescription="@string/desc_logo_title"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
