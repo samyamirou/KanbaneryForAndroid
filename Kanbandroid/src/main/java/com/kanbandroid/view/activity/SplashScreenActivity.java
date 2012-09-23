@@ -3,6 +3,7 @@ package com.kanbandroid.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import com.kanbandroid.R;
+import com.kanbandroid.util.RequestKey;
 import com.octo.android.robospice.exception.ContentManagerException;
 
 public class SplashScreenActivity extends ContentActivity {
@@ -13,31 +14,30 @@ public class SplashScreenActivity extends ContentActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.main);
         if(apiKey != null) {
-            requestForUser();
             requestForWorkspaces();
         }
     }
 
     @Override
-    protected void handleRequestSuccess() {
-        super.handleRequestSuccess();
+    protected void handleRequestSuccess(RequestKey requestKey) {
+        super.handleRequestSuccess(requestKey);
         navigateToProjectsScreen();
     }
 
     @Override
-    protected void handleRequestError(ContentManagerException contentManagerException) {
-        super.handleRequestError(contentManagerException);
+    protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {
+        super.handleRequestError(requestKey, contentManagerException);
         navigateToLoginScreen();
     }
 
-    private void navigateToProjectsScreen() {
+    private void navigateToLoginScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
 
-    private void navigateToLoginScreen() {
+    private void navigateToProjectsScreen() {
         Intent intent = new Intent(this, ProjectListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

@@ -5,6 +5,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.kanbandroid.R;
 import com.kanbandroid.model.Workspace;
+import com.kanbandroid.util.RequestKey;
 import com.kanbandroid.view.adapter.DefaultAdapter;
 import com.kanbandroid.view.cell.WorkspaceCellView;
 
@@ -27,14 +28,20 @@ public class ProjectListActivity extends ContentActivity {
     }
 
     @Override
-    protected void handleRequestSuccess() {
-        super.handleRequestSuccess();
+    protected void handleRequestSuccess(RequestKey requestKey) {
+        super.handleRequestSuccess(requestKey);
         getSherlock().setProgressBarIndeterminateVisibility(false);
-        initializeLayout();
+        initializeLayout(requestKey);
     }
 
-    private void initializeLayout() {
-        tvWorkspacesHeader.setText(user.getName());
-        lvWorkspaces.setAdapter(new DefaultAdapter<Workspace>(this, WorkspaceCellView.class, workspaces));
+    private void initializeLayout(RequestKey requestKey) {
+        switch (requestKey) {
+            case USER:
+                tvWorkspacesHeader.setText(user.getName());
+                break;
+            case WORKSPACES:
+                lvWorkspaces.setAdapter(new DefaultAdapter<Workspace>(this, WorkspaceCellView.class, workspaces));
+                break;
+        }
     }
 }

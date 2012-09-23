@@ -10,6 +10,7 @@ import com.kanbandroid.R;
 import com.kanbandroid.model.User;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.util.Preferences;
+import com.kanbandroid.util.RequestKey;
 import com.octo.android.robospice.ContentManager;
 import com.octo.android.robospice.exception.ContentManagerException;
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -72,23 +73,25 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
         ContentRequest<User> contentRequest = new UserRequest(username, password);
 
-        manager.execute(contentRequest, "user", DurationInMillis.ONE_HOUR, new RequestListener<User>() {
+        final RequestKey requestKey = RequestKey.USER;
+        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<User>() {
             public void onRequestSuccess(User requestedUser) {
                 Log.i(LoginActivity.this, "Login successful ! User : " + requestedUser.getEmail());
                 user = requestedUser;
                 Preferences.putSharedPreference(user.getApiKey(), LoginActivity.this, Preferences.PREF_KEY, Preferences.API_KEY);
                 navigateToProjectsScreen();
+                handleRequestSuccess(requestKey);
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
-                handleRequestError(contentManagerException);
+                handleRequestError(requestKey, contentManagerException);
             }
         });
     }
 
     @Override
-    protected void handleRequestError(ContentManagerException contentManagerException) {
-        super.handleRequestError(contentManagerException);
+    protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {
+        super.handleRequestError(requestKey, contentManagerException);
         btnLogin.setEnabled(true);
         progressLayout.setVisibility(View.INVISIBLE);
     }

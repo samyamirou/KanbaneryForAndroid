@@ -21,4 +21,9 @@ public class Workspace extends ModelObject {
     public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

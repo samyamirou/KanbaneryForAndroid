@@ -23,6 +23,7 @@ public class WorkspaceCellView extends CustomCellView<Workspace> {
     @Override
     public void setData(Workspace workspace) {
         tvProjectsHeader.setText(workspace.getName());
-        lvProjects.setAdapter(new ArrayAdapter<Project>(getContext(), android.R.layout.simple_expandable_list_item_1, workspace.getProjects()));
+        lvProjects.setAdapter(new ArrayAdapter<Project>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, workspace
+                .getProjects()));
     }
 }

@@ -74,4 +74,8 @@ public class User extends ModelObject {
     private String gravatarUrl;
     private String type;
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

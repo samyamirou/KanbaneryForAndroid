@@ -11,8 +11,8 @@ import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.rest.request.WorkspacesRequest;
 import com.kanbandroid.service.KanbandroidContentService;
-import com.kanbandroid.util.CacheKeys;
 import com.kanbandroid.util.Preferences;
+import com.kanbandroid.util.RequestKey;
 import com.octo.android.robospice.ContentManager;
 import com.octo.android.robospice.exception.ContentManagerException;
 import com.octo.android.robospice.persistence.DurationInMillis;
@@ -64,39 +64,44 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         return contentManager;
     }
 
-    protected void requestForUser() {
+    protected RequestKey requestForUser() {
         //On empêche d'abord toute requête d'être lancée
 
         ContentManager manager = getContentManager();
         ContentRequest<User> contentRequest = new UserRequest(apiKey);
 
-        manager.execute(contentRequest, CacheKeys.USER, DurationInMillis.ONE_HOUR, new RequestListener<User>() {
+        final RequestKey requestKey = RequestKey.USER;
+        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<User>() {
             public void onRequestSuccess(User requestedUser) {
                 user = requestedUser;
-                handleRequestSuccess();
+                handleRequestSuccess(requestKey);
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
-                handleRequestError(contentManagerException);
+                handleRequestError(requestKey, contentManagerException);
             }
         });
+
+        return requestKey;
     }
 
-    protected void requestForWorkspaces() {
+    protected RequestKey requestForWorkspaces() {
         ContentManager manager = getContentManager();
         ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(apiKey);
 
-        manager.execute(contentRequest, CacheKeys.WORKSPACES, DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
+        final RequestKey requestKey = RequestKey.WORKSPACES;
+        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
 
             public void onRequestSuccess(Workspaces workspaces) {
                 ContentActivity.this.workspaces = workspaces;
-                handleRequestSuccess();
+                handleRequestSuccess(requestKey);
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
-                handleRequestError(contentManagerException);
+                handleRequestError(requestKey, contentManagerException);
             }
         });
+        return requestKey;
     }
 
     protected void goBackToLoginScreen() {
@@ -106,15 +111,15 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         finish();
     }
 
-    protected void handleEndRequest() {
+    protected void handleEndRequest(RequestKey requestKey) {
 
     }
 
-    protected void handleRequestSuccess() {
-        handleEndRequest();
+    protected void handleRequestSuccess(RequestKey requestKey) {
+        handleEndRequest(requestKey);
     }
 
-    protected void handleRequestError(ContentManagerException contentManagerException) {
+    protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {
         Throwable cause = contentManagerException.getCause();
         String errorMessage = "Unexpected error";
         if(cause != null) {
@@ -131,6 +136,7 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         }
         Log.e(this, errorMessage, contentManagerException);
         showErrorMessage(errorMessage);
+        handleEndRequest(requestKey);
     }
 
     private void showErrorMessage(String message) {
