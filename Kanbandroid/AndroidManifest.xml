@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.ProjectListActivity"/>
 
         <service android:name=".service.KanbandroidContentService" android:exported="false"/>
