@@ -1,17 +1,15 @@
 package com.kanbandroid.rest.request;
 
-import com.kanbandroid.model.User;
-import com.kanbandroid.model.Workspace;
 import com.kanbandroid.model.Workspaces;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
-import java.util.List;
-
 public class WorkspacesRequest extends KanbaneryRestContentRequest<Workspaces> {
 
+    public static final String WORKSPACE_RESOURCE_PATH = "user/workspaces.json";
+
     public WorkspacesRequest(String apiKey) {
-        super(Workspaces.class, "user/workspaces.json", apiKey);
+        super(Workspaces.class, WORKSPACE_RESOURCE_PATH, apiKey);
     }
 
     @Override

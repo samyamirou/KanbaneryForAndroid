@@ -12,6 +12,8 @@
             android:contentDescription="@string/desc_logo_title"/>
     <ProgressBar
             android:id="@+id/pb_splash_screen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             style="@style/Widget.Sherlock.Light.ProgressBar.Horizontal"
             android:layout_gravity="bottom|center_horizontal"
             android:indeterminate="true"/>

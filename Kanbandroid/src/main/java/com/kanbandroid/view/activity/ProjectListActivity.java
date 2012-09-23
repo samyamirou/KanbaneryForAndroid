@@ -4,27 +4,24 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.kanbandroid.R;
-import com.kanbandroid.model.Project;
-import com.kanbandroid.view.adapter.ProjectListAdapter;
-
-import java.util.Collections;
-import java.util.List;
+import com.kanbandroid.model.Workspace;
+import com.kanbandroid.view.adapter.DefaultAdapter;
+import com.kanbandroid.view.cell.WorkspaceCellView;
 
 public class ProjectListActivity extends ContentActivity {
-    private TextView tvProjectsHeader;
-    private ListView lvProjects;
-    private List<Project> projectList = Collections.emptyList();
+    private TextView tvWorkspacesHeader;
+    private ListView lvWorkspaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.projects);
 
-        this.tvProjectsHeader = (TextView) findViewById(R.id.tv_projects_header);
-        this.lvProjects = (ListView) findViewById(R.id.lv_projects);
+        this.tvWorkspacesHeader = (TextView) findViewById(R.id.tv_workspaces_header);
+        this.lvWorkspaces = (ListView) findViewById(R.id.lv_workspaces);
 
-        loadUser();
-        loadWorkspaces();
+        requestForUser();
+        requestForWorkspaces();
 
         getSherlock().setProgressBarIndeterminateVisibility(true);
     }
@@ -32,19 +29,12 @@ public class ProjectListActivity extends ContentActivity {
     @Override
     protected void handleRequestSuccess() {
         super.handleRequestSuccess();
-
         getSherlock().setProgressBarIndeterminateVisibility(false);
-
-        if (workspaces != null && user != null) {
-            if(!workspaces.isEmpty()) {
-                projectList = workspaces.get(0).getProjects();
-            }
-            initializeLayout();
-        }
+        initializeLayout();
     }
 
     private void initializeLayout() {
-        tvProjectsHeader.setText(user.getName());
-        lvProjects.setAdapter(new ProjectListAdapter(this, projectList));
+        tvWorkspacesHeader.setText(user.getName());
+        lvWorkspaces.setAdapter(new DefaultAdapter<Workspace>(this, WorkspaceCellView.class, workspaces));
     }
 }

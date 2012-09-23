@@ -64,7 +64,7 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         return contentManager;
     }
 
-    protected void loadUser() {
+    protected void requestForUser() {
         //On empêche d'abord toute requête d'être lancée
 
         ContentManager manager = getContentManager();
@@ -82,7 +82,7 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         });
     }
 
-    protected void loadWorkspaces() {
+    protected void requestForWorkspaces() {
         ContentManager manager = getContentManager();
         ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(apiKey);
 
