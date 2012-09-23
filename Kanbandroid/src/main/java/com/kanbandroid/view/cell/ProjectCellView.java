@@ -14,6 +14,7 @@ public class ProjectCellView extends CustomCellView<Project> {
         this.tvCellProject = (TextView) findViewById(R.id.tv_cell_project);
     }
 
+    @Override
     public void setData(Project project) {
         tvCellProject.setText(project.getName());
     }

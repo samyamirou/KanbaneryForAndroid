@@ -15,6 +15,8 @@ public class SplashScreenActivity extends ContentActivity {
         setContentView(R.layout.main);
         if(apiKey != null) {
             requestForWorkspaces();
+        } else {
+            navigateToLoginScreen();
         }
     }
 
