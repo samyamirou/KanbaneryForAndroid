@@ -15,4 +15,6 @@
     <string name="error_wrong_credentials">Authentication error, please check your username/password</string>
     <string name="desc_logo_title">Logo title</string>
 
+    <string name="overflow_menu">Menu</string>
+    <string name="menu_item_logout">Déconnexion</string>
 </resources>

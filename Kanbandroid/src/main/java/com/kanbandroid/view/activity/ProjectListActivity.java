@@ -17,6 +17,7 @@ public class ProjectListActivity extends ContentActivity {
     private TextView tvWorkspacesHeader;
     private ListView lvWorkspaces;
     private List<Project> projectList;
+    private ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class ProjectListActivity extends ContentActivity {
         this.lvWorkspaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Project selectedProject = projectList.get(position);
+                Project selectedProject = (Project) adapter.getItem(position);
                  // TODO des trucs
             }
         });
@@ -54,7 +55,8 @@ public class ProjectListActivity extends ContentActivity {
                 break;
             case WORKSPACES:
                 projectList = getProjectList(workspaces);
-                lvWorkspaces.setAdapter(initializeAdapter());
+                adapter = initializeAdapter();
+                lvWorkspaces.setAdapter(adapter);
                 break;
         }
     }

@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Kanbandroid" parent="Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.Kanbandroid" parent="Theme.Sherlock">
         <!-- Any customizations for your app running on devices with Theme.Holo here -->
         <!--<item name="android:windowBackground">@drawable/background_gradient</item>
         <item name="android:colorBackgroundCacheHint">#00000000</item>-->

@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.kanbandroid.R;
 import com.kanbandroid.model.User;
 import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.rest.request.WorkspacesRequest;
 import com.kanbandroid.service.KanbandroidContentService;
+import com.kanbandroid.util.MenuOption;
 import com.kanbandroid.util.Preferences;
 import com.kanbandroid.util.RequestKey;
 import com.octo.android.robospice.ContentManager;
@@ -23,7 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 public abstract class ContentActivity extends SherlockFragmentActivity {
-    private ContentManager contentManager = new ContentManager( KanbandroidContentService.class );
+    private ContentManager contentManager = new ContentManager(KanbandroidContentService.class);
     protected User user;
     protected Workspaces workspaces;
     protected String apiKey = null;
@@ -45,10 +49,17 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         return pref.getString(Preferences.API_KEY, null);
     }
 
+    private void clearApiKeyPreference() {
+        SharedPreferences pref = getSharedPreferences(Preferences.PREF_KEY, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+
     @Override
     protected void onStart() {
         Log.i(this, "Starting activity " + getLocalClassName() + " ...");
-        contentManager.start( this );
+        contentManager.start(this);
 
         super.onStart();
     }
@@ -90,7 +101,7 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(apiKey);
 
         final RequestKey requestKey = RequestKey.WORKSPACES;
-        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<Workspaces> () {
+        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<Workspaces>() {
 
             public void onRequestSuccess(Workspaces workspaces) {
                 ContentActivity.this.workspaces = workspaces;
@@ -122,12 +133,12 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
     protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {
         Throwable cause = contentManagerException.getCause();
         String errorMessage = "Unexpected error";
-        if(cause != null) {
+        if (cause != null) {
             try {
                 throw cause;
             } catch (HttpClientErrorException e) {
                 HttpStatus statusCode = e.getStatusCode();
-                if(statusCode == HttpStatus.UNAUTHORIZED) {
+                if (statusCode == HttpStatus.UNAUTHORIZED) {
                     errorMessage = getString(R.string.error_wrong_credentials);
                 }
             } catch (Throwable e) {
@@ -142,5 +153,29 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
     private void showErrorMessage(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getSupportMenuInflater().inflate(R.menu.overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.menu_item_logout) {
+            logout();
+        }
+
+        return false;
+    }
+
+    private void logout() {
+        clearApiKeyPreference();
+        contentManager.removeAllDataFromCache();
+        goBackToLoginScreen();
     }
 }
