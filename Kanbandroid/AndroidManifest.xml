@@ -23,6 +23,7 @@
 
         <activity android:name=".view.activity.LoginActivity"/>
         <activity android:name=".view.activity.ProjectListActivity"/>
+        <activity android:name=".view.activity.ProjectActivity"/>
 
         <service android:name=".service.KanbandroidContentService" android:exported="false"/>
     </application>

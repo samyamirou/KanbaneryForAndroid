@@ -10,21 +10,21 @@ import de.akquinet.android.androlog.Log;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class DefaultAdapter<T> extends BaseAdapter {
+public class BaseListAdapter<T> extends BaseAdapter {
     protected Context context;
     protected Class<? extends CustomCellView<T>> cellViewClass;
     protected List<T> objectList;
     private CustomCellView<T> cell;
     private ViewGroup parent;
 
-    public DefaultAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList) {
+    public BaseListAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList) {
         super();
         this.context = context;
         this.cellViewClass = cellViewClass;
         this.objectList = objectList;
     }
 
-    public DefaultAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList, ViewGroup parent) {
+    public BaseListAdapter(Context context, Class<? extends CustomCellView<T>> cellViewClass, List<T> objectList, ViewGroup parent) {
         this(context, cellViewClass, objectList);
         this.parent = parent;
     }
@@ -43,7 +43,7 @@ public class DefaultAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public T getItem(int position) {
         return objectList.get(position);
     }
 

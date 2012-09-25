@@ -2,15 +2,13 @@ package com.kanbandroid.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.kanbandroid.R;
 import com.kanbandroid.model.Project;
 import com.kanbandroid.model.Workspace;
 import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.util.RequestKey;
-import com.kanbandroid.view.adapter.ProjectCellAdapter;
+import com.kanbandroid.view.adapter.SeparatedListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class ProjectListActivity extends ContentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Project selectedProject = projectList.get(position);
-
+                 // TODO des trucs
             }
         });
     }
@@ -56,9 +54,19 @@ public class ProjectListActivity extends ContentActivity {
                 break;
             case WORKSPACES:
                 projectList = getProjectList(workspaces);
-                lvWorkspaces.setAdapter(new ProjectCellAdapter(this, projectList));
+                lvWorkspaces.setAdapter(initializeAdapter());
                 break;
         }
+    }
+
+    private ListAdapter initializeAdapter() {
+        SeparatedListAdapter<Workspace> ret = new SeparatedListAdapter<Workspace>(this);
+        if (workspaces != null) {
+            for (Workspace workspace : workspaces) {
+                ret.addSection(workspace, new ArrayAdapter<Project>(this, R.layout.list_item, workspace.getProjects()));
+            }
+        }
+        return ret;
     }
 
     private List<Project> getProjectList(Workspaces workspaces) {

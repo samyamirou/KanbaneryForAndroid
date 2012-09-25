@@ -8,7 +8,7 @@ import com.kanbandroid.view.cell.ProjectCellView;
 
 import java.util.List;
 
-public class ProjectCellAdapter extends DefaultAdapter<Project> {
+public class ProjectCellAdapter extends BaseListAdapter<Project> {
     public ProjectCellAdapter(Context context, List<Project> objectList) {
         super(context, ProjectCellView.class, objectList);
     }
