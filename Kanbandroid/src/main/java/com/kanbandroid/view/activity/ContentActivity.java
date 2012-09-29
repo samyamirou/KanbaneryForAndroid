@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -14,7 +13,6 @@ import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.rest.request.WorkspacesRequest;
 import com.kanbandroid.service.KanbandroidContentService;
-import com.kanbandroid.util.MenuOption;
 import com.kanbandroid.util.Preferences;
 import com.kanbandroid.util.RequestKey;
 import com.octo.android.robospice.ContentManager;
@@ -75,44 +73,37 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
         return contentManager;
     }
 
-    protected RequestKey requestForUser() {
-        //On empêche d'abord toute requête d'être lancée
-
-        ContentManager manager = getContentManager();
-        ContentRequest<User> contentRequest = new UserRequest(apiKey);
-
-        final RequestKey requestKey = RequestKey.USER;
-        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<User>() {
-            public void onRequestSuccess(User requestedUser) {
-                user = requestedUser;
-                handleRequestSuccess(requestKey);
-            }
-
-            public void onRequestFailure(ContentManagerException contentManagerException) {
-                handleRequestError(requestKey, contentManagerException);
-            }
-        });
-
-        return requestKey;
+    protected void requestForUser() {
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+        requestForData(new UserRequest(apiKey), RequestKey.USER);
     }
 
-    protected RequestKey requestForWorkspaces() {
+    protected void requestForWorkspaces() {
+        getSherlock().setProgressBarIndeterminateVisibility(true);
+        requestForData(new WorkspacesRequest(apiKey), RequestKey.WORKSPACES);
+    }
+
+    protected <T> void requestForData(ContentRequest<T> contentRequest, final RequestKey requestKey, Object... requestParams) {
         ContentManager manager = getContentManager();
-        ContentRequest<Workspaces> contentRequest = new WorkspacesRequest(apiKey);
 
-        final RequestKey requestKey = RequestKey.WORKSPACES;
-        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<Workspaces>() {
-
-            public void onRequestSuccess(Workspaces workspaces) {
-                ContentActivity.this.workspaces = workspaces;
-                handleRequestSuccess(requestKey);
+        RequestListener<T> requestListener = new RequestListener<T>() {
+            public void onRequestSuccess(T requestedData) {
+                handleRequestSuccess(requestKey, requestedData);
             }
 
             public void onRequestFailure(ContentManagerException contentManagerException) {
                 handleRequestError(requestKey, contentManagerException);
             }
-        });
-        return requestKey;
+        };
+
+        String cacheKey;
+        if(requestParams.length > 0) {
+            cacheKey = String.format(requestKey.getCacheKey(), requestParams);
+        } else {
+            cacheKey = requestKey.getCacheKey();
+        }
+
+        manager.execute(contentRequest, cacheKey, DurationInMillis.ONE_HOUR, requestListener);
     }
 
     protected void goBackToLoginScreen() {
@@ -123,11 +114,18 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
     }
 
     protected void handleEndRequest(RequestKey requestKey) {
-
+        getSherlock().setProgressBarIndeterminateVisibility(false);
     }
 
-    protected void handleRequestSuccess(RequestKey requestKey) {
+    protected void handleRequestSuccess(RequestKey requestKey, Object requestedData) {
         handleEndRequest(requestKey);
+        switch (requestKey) {
+            case USER:
+                this.user = (User) requestedData;
+                break;
+            case WORKSPACES:
+                this.workspaces = (Workspaces) requestedData;
+        }
     }
 
     protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {

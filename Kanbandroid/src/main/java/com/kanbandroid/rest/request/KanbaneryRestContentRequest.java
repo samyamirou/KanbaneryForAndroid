@@ -11,17 +11,21 @@ import org.springframework.web.client.RestTemplate;
 
 public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<T> {
 
+    public static final String HEADER_NAME_API_TOKEN = "X-Kanbanery-ApiToken";
     protected String url;
     private String username;
     private String password;
     private String apiKey;
-    private Class<T> resultClass;
     private HttpEntity<T> requestEntity;
 
     private KanbaneryRestContentRequest(Class<T> clazz, String resourcePath) {
         super(clazz);
-        this.resultClass = clazz;
         this.url = UrlConstants.BASE_URL + resourcePath;
+    }
+
+    private KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, Workspace workspace) {
+        super(clazz);
+        this.url = String.format(UrlConstants.WORKSPACE_URL, workspace.getName()) + resourcePath;
     }
 
     public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, String username, String password) {
@@ -36,23 +40,36 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
     }
 
     public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, Workspace workspace, String username, String password) {
-        this(clazz, resourcePath, username, password);
-        formatWorkspaceUrl(workspace);
+        this(clazz, resourcePath, workspace);
+        this.username = username;
+        this.password = password;
     }
 
     public KanbaneryRestContentRequest(Class<T> clazz, String resourcePath, Workspace workspace, String apiKey) {
-        this(clazz, resourcePath, apiKey);
-        formatWorkspaceUrl(workspace);
+        this(clazz, resourcePath, workspace);
+        this.apiKey = apiKey;
     }
 
-    private void formatWorkspaceUrl(Workspace workspace) {
-        this.url = String.format(UrlConstants.WORKSPACE_URL, workspace.getName());
+    private ResponseEntity<T> sendResponse(HttpMethod httpMethod) throws RestClientException {
+        initializeRequest();
+        RestTemplate restTemplate = getRestTemplate();
+        return restTemplate.exchange(url, httpMethod, requestEntity, getResultType());
     }
 
     protected ResponseEntity<T> getResponse() throws RestClientException {
-        initializeRequest();
-        RestTemplate restTemplate = getRestTemplate();
-        return restTemplate.exchange(url, HttpMethod.GET, requestEntity, resultClass);
+        return sendResponse(HttpMethod.GET);
+    }
+
+    protected ResponseEntity<T> postResponse() throws RestClientException {
+        return sendResponse(HttpMethod.POST);
+    }
+
+    protected ResponseEntity<T> putResponse() throws RestClientException {
+        return sendResponse(HttpMethod.PUT);
+    }
+
+    protected ResponseEntity<T> deleteResponse() throws RestClientException {
+        return sendResponse(HttpMethod.DELETE);
     }
 
     private void initializeRequest() {
@@ -61,7 +78,7 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
         HttpHeaders requestHeaders = new HttpHeaders();
 
         if (apiKey != null) {
-            requestHeaders.set("X-Kanbanery-ApiToken", apiKey);
+            requestHeaders.set(HEADER_NAME_API_TOKEN, apiKey);
         } else if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password)) {
             requestHeaders.setAuthorization(new HttpBasicAuthentication(username,password));
         } else {
@@ -69,5 +86,6 @@ public abstract class KanbaneryRestContentRequest<T> extends RestContentRequest<
         }
 
         this.requestEntity = new HttpEntity<T>(requestHeaders);
+
     }
 }

@@ -3,9 +3,10 @@ package com.kanbandroid.model;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class ModelObject {
+public abstract class ModelObject implements Serializable {
     protected Number id;
     @JsonProperty("created_at")
     protected Date createdAt;

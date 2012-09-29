@@ -11,11 +11,6 @@ import com.kanbandroid.model.User;
 import com.kanbandroid.rest.request.UserRequest;
 import com.kanbandroid.util.Preferences;
 import com.kanbandroid.util.RequestKey;
-import com.octo.android.robospice.ContentManager;
-import com.octo.android.robospice.exception.ContentManagerException;
-import com.octo.android.robospice.persistence.DurationInMillis;
-import com.octo.android.robospice.request.ContentRequest;
-import com.octo.android.robospice.request.RequestListener;
 import de.akquinet.android.androlog.Log;
 
 import java.util.HashSet;
@@ -68,30 +63,23 @@ public class LoginActivity extends ContentActivity implements View.OnClickListen
         btnLogin.setEnabled(false);
         progressLayout.setVisibility(View.VISIBLE);
 
-        ContentManager manager = getContentManager();
         Preconditions.checkArgument(username != null, "Username shouldn't be null");
         Preconditions.checkArgument(password != null, "Password shouldn't be null");
-        ContentRequest<User> contentRequest = new UserRequest(username, password);
 
-        final RequestKey requestKey = RequestKey.USER;
-        manager.execute(contentRequest, requestKey.getCacheKey(), DurationInMillis.ONE_HOUR, new RequestListener<User>() {
-            public void onRequestSuccess(User requestedUser) {
-                Log.i(LoginActivity.this, "Login successful ! User : " + requestedUser.getEmail());
-                user = requestedUser;
-                Preferences.putSharedPreference(user.getApiKey(), LoginActivity.this, Preferences.PREF_KEY, Preferences.API_KEY);
-                navigateToProjectsScreen();
-                handleRequestSuccess(requestKey);
-            }
-
-            public void onRequestFailure(ContentManagerException contentManagerException) {
-                handleRequestError(requestKey, contentManagerException);
-            }
-        });
+        requestForData(new UserRequest(username, password), RequestKey.USER);
     }
 
     @Override
-    protected void handleRequestError(RequestKey requestKey, ContentManagerException contentManagerException) {
-        super.handleRequestError(requestKey, contentManagerException);
+    protected void handleRequestSuccess(RequestKey requestKey, Object requestedData) {
+        super.handleRequestSuccess(requestKey, requestedData);
+        user = (User) requestedData;
+        Log.i(LoginActivity.this, "Login successful ! User : " + user.getEmail());
+        Preferences.putSharedPreference(user.getApiKey(), LoginActivity.this, Preferences.PREF_KEY, Preferences.API_KEY);
+        navigateToProjectsScreen();
+    }
+
+    @Override
+    protected void handleEndRequest(RequestKey requestKey) {
         btnLogin.setEnabled(true);
         progressLayout.setVisibility(View.INVISIBLE);
     }

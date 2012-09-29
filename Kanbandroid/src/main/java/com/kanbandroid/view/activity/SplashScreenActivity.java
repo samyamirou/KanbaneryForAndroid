@@ -21,8 +21,8 @@ public class SplashScreenActivity extends ContentActivity {
     }
 
     @Override
-    protected void handleRequestSuccess(RequestKey requestKey) {
-        super.handleRequestSuccess(requestKey);
+    protected void handleRequestSuccess(RequestKey requestKey, Object requestedData) {
+        super.handleRequestSuccess(requestKey, requestedData);
         navigateToProjectsScreen();
     }
 

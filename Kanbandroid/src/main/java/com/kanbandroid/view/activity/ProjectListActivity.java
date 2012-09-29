@@ -1,22 +1,20 @@
 package com.kanbandroid.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.kanbandroid.R;
 import com.kanbandroid.model.Project;
 import com.kanbandroid.model.Workspace;
-import com.kanbandroid.model.Workspaces;
 import com.kanbandroid.util.RequestKey;
 import com.kanbandroid.view.adapter.SeparatedListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectListActivity extends ContentActivity {
     private TextView tvWorkspacesHeader;
     private ListView lvWorkspaces;
-    private List<Project> projectList;
     private ListAdapter adapter;
 
     @Override
@@ -36,15 +34,21 @@ public class ProjectListActivity extends ContentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Project selectedProject = (Project) adapter.getItem(position);
-                 // TODO des trucs
+                navigateToProjectActivity(selectedProject);
             }
         });
     }
 
+    private void navigateToProjectActivity(Project selectedProject) {
+        Intent intent = new Intent(this, ProjectActivity.class);
+        intent.putExtra(ProjectActivity.PROJECT_INTENT_EXTRA, selectedProject);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
-    protected void handleRequestSuccess(RequestKey requestKey) {
-        super.handleRequestSuccess(requestKey);
-        getSherlock().setProgressBarIndeterminateVisibility(false);
+    protected void handleRequestSuccess(RequestKey requestKey, Object requestedData) {
+        super.handleRequestSuccess(requestKey, requestedData);
         initializeLayout(requestKey);
     }
 
@@ -54,7 +58,6 @@ public class ProjectListActivity extends ContentActivity {
                 tvWorkspacesHeader.setText(user.getName());
                 break;
             case WORKSPACES:
-                projectList = getProjectList(workspaces);
                 adapter = initializeAdapter();
                 lvWorkspaces.setAdapter(adapter);
                 break;
@@ -65,18 +68,11 @@ public class ProjectListActivity extends ContentActivity {
         SeparatedListAdapter<Workspace> ret = new SeparatedListAdapter<Workspace>(this);
         if (workspaces != null) {
             for (Workspace workspace : workspaces) {
-                ret.addSection(workspace, new ArrayAdapter<Project>(this, R.layout.list_item, workspace.getProjects()));
-            }
-        }
-        return ret;
-    }
-
-    private List<Project> getProjectList(Workspaces workspaces) {
-        List<Project> ret = new ArrayList<Project>();
-        for(Workspace workspace : workspaces) {
-            for (Project project : workspace.getProjects()) {
-                project.setWorkspace(workspace);
-                ret.add(project);
+                List<Project> projects = workspace.getProjects();
+                ret.addSection(workspace, new ArrayAdapter<Project>(this, R.layout.list_item, projects));
+                for (Project project : projects) {
+                    project.setWorkspace(workspace);
+                }
             }
         }
         return ret;
