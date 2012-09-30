@@ -4,6 +4,7 @@ public enum RequestKey {
     USER("user", "user.json"),
     WORKSPACES("workspaces", "user/workspaces.json"),
     COLUMNS("project[%s]_columns", "projects/%s/columns.json"),
+    TASKS("columns[%s]_tasks", "columns/%s/tasks.json"),
     COLUMN("project[%s]_column[%s]", "columns/%s.json");
 
     private final String cacheKey;

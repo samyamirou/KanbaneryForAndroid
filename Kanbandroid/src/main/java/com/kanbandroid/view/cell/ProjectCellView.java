@@ -27,8 +27,4 @@ public class ProjectCellView extends CustomCellView<Project> {
         }
         tvCellProject.setText(project.getName());
     }
-
-    public void setPrintHeader(boolean printHeader) {
-        this.printHeader = printHeader;
-    }
 }

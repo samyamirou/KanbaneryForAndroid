@@ -74,16 +74,15 @@ public abstract class ContentActivity extends SherlockFragmentActivity {
     }
 
     protected void requestForUser() {
-        getSherlock().setProgressBarIndeterminateVisibility(true);
         requestForData(new UserRequest(apiKey), RequestKey.USER);
     }
 
     protected void requestForWorkspaces() {
-        getSherlock().setProgressBarIndeterminateVisibility(true);
         requestForData(new WorkspacesRequest(apiKey), RequestKey.WORKSPACES);
     }
 
-    protected <T> void requestForData(ContentRequest<T> contentRequest, final RequestKey requestKey, Object... requestParams) {
+    public <T> void requestForData(ContentRequest<T> contentRequest, final RequestKey requestKey, Object... requestParams) {
+        getSherlock().setProgressBarIndeterminateVisibility(true);
         ContentManager manager = getContentManager();
 
         RequestListener<T> requestListener = new RequestListener<T>() {
